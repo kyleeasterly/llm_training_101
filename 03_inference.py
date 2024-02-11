@@ -26,5 +26,6 @@ while True:
     inputs = inputs.to('cuda')
     outputs = model.generate(**inputs, max_new_tokens=256, return_dict_in_generate=True, output_scores=True)
 
-    for token_id in outputs.sequences[0][inputs.input_ids.shape[1]:]: # slice from end of input to end of output
-        print(f"{token_id}")
+    generated_sequence = outputs.sequences[0][inputs['input_ids'].size(1):]  # slice from end of input to end of output
+    generated_text = tokenizer.decode(generated_sequence, skip_special_tokens=True)
+    print(generated_text)
